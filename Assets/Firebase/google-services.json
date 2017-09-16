@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "362688595666",
+    "firebase_url": "https://hackthenorth-a4e06.firebaseio.com",
+    "project_id": "hackthenorth-a4e06",
+    "storage_bucket": "hackthenorth-a4e06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362688595666:android:84e7262d7edafe28",
+        "android_client_info": {
+          "package_name": "xyz.charliezhang.HtN2017"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "362688595666-gd04efps4jbbakfag10ipa1050k1it6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLgU3_cJkEcEvQovuWMQI8lfPi5z7wWNg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
