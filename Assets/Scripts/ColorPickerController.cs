@@ -25,7 +25,8 @@ public class ColorPickerController : MonoBehaviour {
 
 	}
 
-	public void selectColor(Color color) {
-		
+	public void close() {
+		open = false;
+		colorPicker.SetActive (false);
 	}
 }

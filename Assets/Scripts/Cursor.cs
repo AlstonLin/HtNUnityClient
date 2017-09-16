@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Cursor : MonoBehaviour {
 	const float PLANE_WIDTH = 0.01f;
+
+	public static Color currentColor = Color.white;
+
 	GameObject plane = null;
 
 	// Use this for initialization
@@ -20,6 +23,7 @@ public class Cursor : MonoBehaviour {
 		// Finds the approximate axis that is being looked from
 		float max = Mathf.Max(Mathf.Max(Mathf.Abs(delta.x), Mathf.Abs(delta.y)), Mathf.Abs(delta.z));
 		plane = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		plane.GetComponent<Renderer> ().material.color = currentColor;
 		if (max == Mathf.Abs(delta.x)) {
 			// Creates a highlight plane on y-z axis
 			plane.transform.position = new Vector3 ((float) Mathf.Floor (target.x), Mathf.Ceil (target.y) - 0.5f, Mathf.Ceil (target.z) - 0.5f);
