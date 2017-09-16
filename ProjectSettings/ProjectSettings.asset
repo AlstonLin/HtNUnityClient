@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 12
-  productGUID: 8e547173feb634c8095d7ee8c60efa80
+  productGUID: 5d479a5095cc847c6a2b27c9424638ba
   AndroidProfiler: 0
   defaultScreenOrientation: 4
   targetDevice: 2
@@ -407,7 +407,7 @@ PlayerSettings:
   ps4DownloadDataSize: 0
   ps4GarlicHeapSize: 2048
   ps4ProGarlicHeapSize: 2560
-  ps4Passcode: N2qmWqBlQ9wQj99nsQzldVI5ZuGXbEWR
+  ps4Passcode: ht6xGbotuQQgmO6GkdAqwedXNRRadbLM
   ps4pnSessions: 1
   ps4pnPresence: 1
   ps4pnFriends: 1
@@ -453,7 +453,7 @@ PlayerSettings:
   psp2LiveAreaTrialPath: 
   psp2PatchChangeInfoPath: 
   psp2PatchOriginalPackage: 
-  psp2PackagePassword: K5RhRXdCdG5nG5azdNMK66MuCV6GXi5x
+  psp2PackagePassword: ZROaAfZDAWhxgqRqcM1fdhRxRZYw3GFh
   psp2KeystoneFile: 
   psp2MemoryExpansionMode: 0
   psp2DRMType: 0
@@ -589,9 +589,9 @@ PlayerSettings:
   cloudServicesEnabled: {}
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: ac4dc3bd-02b4-41c4-af30-b35646226505
-  projectName: HtNUnityClient
-  organizationId: luoyang9
+  cloudProjectId: 
+  projectName: 
+  organizationId: 
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
