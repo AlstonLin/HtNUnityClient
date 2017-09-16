@@ -37,5 +37,10 @@ public class Cursor : MonoBehaviour {
 			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, Mathf.Ceil (target.y) - 0.5f, (float) Mathf.Floor(target.z));
 			plane.transform.localScale = new Vector3 (1, 1, PLANE_WIDTH);
 		}
+
+		//place block
+		if (Input.touchCount > 0 || Input.GetMouseButtonDown (0)) {
+			GameObject.Instantiate (plane);
+		}
 	}
 }
