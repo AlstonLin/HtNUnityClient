@@ -53,7 +53,7 @@ public class GvrEditorEmulator : MonoBehaviour {
       Camera cam = validCameras.Current;
 
       HeadPosition = Vector3.zero;
-      cam.transform.localPosition = HeadPosition;
+//      cam.transform.localPosition = HeadPosition;
 
       HeadRotation = new Quaternion(mouseX, mouseY, mouseZ, 1);
       cam.transform.localRotation = HeadRotation;
@@ -93,7 +93,7 @@ public class GvrEditorEmulator : MonoBehaviour {
       Camera cam = validCameras.Current;
       HeadPosition = (HeadRotation * NECK_OFFSET - NECK_OFFSET.y * Vector3.up) * cam.transform.lossyScale.y;
 
-      cam.transform.localPosition = HeadPosition;
+//      cam.transform.localPosition = HeadPosition;
       cam.transform.localRotation = HeadRotation;
     }
   }
