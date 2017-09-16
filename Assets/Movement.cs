@@ -12,7 +12,7 @@ public class Movement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.touchCount > 0 || Input.GetMouseButton(0)) {
-			
+			transform.Translate (Camera.main.transform.forward * 0.1f);
 		}
 	}
 }
