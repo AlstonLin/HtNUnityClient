@@ -30,6 +30,12 @@ public class SelectShape : MonoBehaviour {
 		case "SlantSquare":
 			Cursor.currentShape = Shapes.SLANT_SQUARE;
 			break;
+		case "LeftTriangle":
+			Cursor.currentShape = Shapes.LEFT_TRIANGLE;
+			break;
+		case "RightTriangle":
+			Cursor.currentShape = Shapes.RIGHT_TRIANGLE;
+			break;
 		default:
 			print("No shape \"" + name + "\" found in ShapePicker");
 			break;

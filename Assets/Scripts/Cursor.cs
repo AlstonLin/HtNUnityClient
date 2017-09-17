@@ -51,6 +51,12 @@ public class Cursor : StateChangeListener {
 		case Shapes.SLANT_SQUARE:
 			obj = createSlantedSquarePrim ();
 			break;
+		case Shapes.LEFT_TRIANGLE:
+			obj = createLeftTrianglePrim ();
+			break;
+		case Shapes.RIGHT_TRIANGLE:
+			obj = createRightTrianglePrim ();
+			break;
 		default:
 			obj = GameObject.CreatePrimitive (PrimitiveType.Cube);
 			break;
@@ -123,6 +129,12 @@ public class Cursor : StateChangeListener {
 					break;
 				case Shapes.SLANT_SQUARE:
 					createSlantedSquare (delta, target, max);
+					break;
+				case Shapes.LEFT_TRIANGLE:
+					createLeftTriangle (delta, target, max);
+					break;
+				case Shapes.RIGHT_TRIANGLE:
+					createRightTriangle (delta, target, max);
 					break;
 				default: 
 					createSquare (delta, target, max);
@@ -225,8 +237,7 @@ public class Cursor : StateChangeListener {
 		return plane;
 	}
 
-	private void createCenterTriangle(Vector3 delta, Vector3 target, float max) {
-		plane = createCenterTrianglePrim ();
+	private void setupShape(GameObject plane, Vector3 delta, Vector3 target, float max) {
 		plane.GetComponent<Renderer> ().material.color = currentColor;
 		// unlike Cube, the center of the mesh is on the sides
 		plane.transform.position = new Vector3 (Mathf.Floor (target.x), Mathf.Floor (target.y), Mathf.Floor (target.z));
@@ -260,6 +271,11 @@ public class Cursor : StateChangeListener {
 		}
 	}
 
+	private void createCenterTriangle(Vector3 delta, Vector3 target, float max) {
+		plane = createCenterTrianglePrim ();
+		setupShape (plane, delta, target, max);
+	}
+
 	private GameObject createSlantedSquarePrim() {
 		GameObject plane = new GameObject ();
 		plane.AddComponent<MeshFilter>();
@@ -282,35 +298,50 @@ public class Cursor : StateChangeListener {
 
 	private void createSlantedSquare(Vector3 delta, Vector3 target, float max) {
 		plane = createSlantedSquarePrim ();
-		plane.GetComponent<Renderer> ().material.color = currentColor;
-		plane.transform.position = new Vector3 (Mathf.Floor (target.x), Mathf.Floor (target.y), Mathf.Floor (target.z));
-		if (max == Mathf.Abs (delta.x)) {
-			// Creates a highlight plane on y-z axis
-			if (delta.x >= 0) {
-				Debug.Log ("x-axis +");
-				plane.transform.rotation = Quaternion.AngleAxis (0, Vector3.up);
-			} else {
-				Debug.Log ("x-axis -");
-				plane.transform.rotation = Quaternion.AngleAxis (180, Vector3.up);
-			}
-		} else if (max == Mathf.Abs (delta.y)) {
-			// Creates a highlight plane on x-z axis
-			if (delta.y >= 0) {
-				Debug.Log ("y-axis +");
-				plane.transform.rotation = Quaternion.AngleAxis (90, Vector3.up);
-			} else {
-				Debug.Log ("y-axis -");
-				plane.transform.rotation = Quaternion.AngleAxis (270, Vector3.up);
-			}
-		} else { // delta.z is max
-			// Creates a highlight plane on x-y axis
-			if (delta.z >= 0) {
-				Debug.Log ("z-axis +");
-				plane.transform.rotation = Quaternion.AngleAxis (270, Vector3.up);
-			} else {
-				Debug.Log ("z-axis -");
-				plane.transform.rotation = Quaternion.AngleAxis (90, Vector3.up);
-			}
-		}
+		setupShape (plane, delta, target, max);
+	}
+
+	private GameObject createLeftTrianglePrim() {
+		GameObject plane = new GameObject ();
+		plane.AddComponent<MeshFilter>();
+		plane.AddComponent<MeshRenderer>();
+		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
+		mesh.vertices = new Vector3[] {
+			new Vector3 (0, 0, 0), // 0
+			new Vector3 (0, 1, 0), // 1
+			new Vector3 (0, 0, 1), // 2
+			new Vector3 (0+PLANE_WIDTH, 0, 0), // 3
+			new Vector3 (0+PLANE_WIDTH, 1, 0), // 4
+			new Vector3 (0+PLANE_WIDTH, 0, 1)  // 5
+		};
+		mesh.triangles = new int[] { 0, 1, 2,  5, 4, 3 };
+		return plane;
+	}
+
+	private void createLeftTriangle(Vector3 delta, Vector3 target, float max) {
+		plane = createLeftTrianglePrim ();
+		setupShape (plane, delta, target, max);
+	}
+
+	private GameObject createRightTrianglePrim() {
+		GameObject plane = new GameObject ();
+		plane.AddComponent<MeshFilter>();
+		plane.AddComponent<MeshRenderer>();
+		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
+		mesh.vertices = new Vector3[] {
+			new Vector3 (0, 0, 0), // 0
+			new Vector3 (0, 1, 1), // 1
+			new Vector3 (0, 0, 1), // 2
+			new Vector3 (0+PLANE_WIDTH, 0, 0), // 3
+			new Vector3 (0+PLANE_WIDTH, 1, 1), // 4
+			new Vector3 (0+PLANE_WIDTH, 0, 1)  // 5
+		};
+		mesh.triangles = new int[] { 0, 1, 2,  5, 4, 3 };
+		return plane;
+	}
+
+	private void createRightTriangle(Vector3 delta, Vector3 target, float max) {
+		plane = createRightTrianglePrim ();
+		setupShape (plane, delta, target, max);
 	}
 }
