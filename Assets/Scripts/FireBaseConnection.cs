@@ -32,6 +32,10 @@ public class FireBaseConnection {
 		this.onUpdate = onUpdate;
 	}
 
+	public void importCurrentWorld(){
+		
+	}
+
 	public void addBlock(Block block){
 		world.Child(block.id).SetRawJsonValueAsync(block.toJson());
 	}
