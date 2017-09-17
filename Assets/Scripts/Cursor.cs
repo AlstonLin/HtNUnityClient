@@ -63,24 +63,37 @@ public class Cursor : StateChangeListener {
 		}
 		switch (block.color) {
 		case FaceColors.WHITE:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.white;
+			obj.GetComponent<Renderer> ().material.color = Color.white;
 			break;
 		case FaceColors.BLUE:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.blue;
+			obj.GetComponent<Renderer> ().material.color = Color.blue;
 			break;
 		case FaceColors.YELLOW:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.yellow;
+			obj.GetComponent<Renderer> ().material.color = Color.yellow;
 			break;
 		case FaceColors.RED:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.red;
+			obj.GetComponent<Renderer> ().material.color = new Color(195f/255f, 4f/255f, 4f/255f);
+			break;
+		case FaceColors.GREEN:
+			obj.GetComponent<Renderer> ().material.color = Color.green;
+			break;
+		case FaceColors.PURPLE:
+			obj.GetComponent<Renderer> ().material.color = new Color(127f/255f, 0, 1);
+			break;
+		case FaceColors.ORANGE:
+			obj.GetComponent<Renderer> ().material.color = new Color(1, 127f/255f, 0);
+			break;
+		case FaceColors.BLACK:
+			obj.GetComponent<Renderer> ().material.color = Color.black;
 			break;
 		default:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.white;
+			obj.GetComponent<Renderer> ().material.color = Color.white;
 			break;
 		}
 		obj.transform.position = block.location;
 		obj.transform.rotation.Set (block.rotation.x, block.rotation.y, block.rotation.z, block.rotation.w);
 		obj.transform.localScale = block.scale;
+		obj.name = block.id;
 		ActiveBlocksDictionary.addToDict (block.id, obj);
 	}
 	public override void onBlockRemoved(Block block) {
@@ -187,10 +200,18 @@ public class Cursor : StateChangeListener {
 									intColor = FaceColors.WHITE;
 								} else if(currentColor == Color.blue) {
 									intColor = FaceColors.BLUE;
-								} else if(currentColor == Color.red) {
+								} else if(currentColor.r == 195f/255f && currentColor.g == 4f/255f && currentColor.b == 4f/255f) {
 									intColor = FaceColors.RED;
 								} else if(currentColor == Color.yellow) {
 									intColor = FaceColors.YELLOW;
+								} else if(currentColor == Color.green) {
+									intColor = FaceColors.GREEN;
+								} else if(currentColor.r == 127f/255f && currentColor.g == 0 && currentColor.b == 1) {
+									intColor = FaceColors.PURPLE;
+								} else if(currentColor.r == 1 && currentColor.g == 127f/255f && currentColor.b == 0) {
+									intColor = FaceColors.ORANGE;
+								} else if(currentColor == Color.black) {
+									intColor = FaceColors.BLACK;
 								} else {
 									intColor = FaceColors.WHITE;
 								}

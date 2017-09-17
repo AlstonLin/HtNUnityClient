@@ -33,16 +33,16 @@ public class SelectColor : MonoBehaviour {
 			Cursor.currentColor = Color.green;
 			break;
 		case "Purple":
-			Cursor.currentColor = new Color(127, 0, 255);
+			Cursor.currentColor = new Color(127f/255f, 0, 1);
 			break;
 		case "Orange":
-			Cursor.currentColor = new Color(255, 127, 0);
+			Cursor.currentColor = new Color(1, 127f/255f, 0);
 			break;
 		case "Black":
 			Cursor.currentColor = Color.black;
 			break;
 		case "Red":
-			Cursor.currentColor = new Color(195, 4, 4);
+			Cursor.currentColor = new Color(195f/255f, 4f/255f, 4f/255f);
 			break;
 		default:
 			print("No color \"" + name + "\" found in ColorPicker");

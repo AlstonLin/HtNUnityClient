@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class HUDController : MonoBehaviour {
 
@@ -37,6 +39,8 @@ public class HUDController : MonoBehaviour {
 							HUD.SetActive (hudOpen);
 							HUD.transform.position = Camera.main.transform.position + Camera.main.transform.forward;
 							HUD.transform.rotation = Camera.main.transform.rotation;
+							GameObject.Find ("ToggleRemove").GetComponentInChildren<Text> ().text = Cursor.removeMode 
+								? "Deactivate Remove Mode" : "Activate Remove Mode";
 						} else {
 							close ();
 						}
@@ -76,9 +80,9 @@ public class HUDController : MonoBehaviour {
 		HUD.SetActive (false);
 	}
 
-	public void toggleRemoveMode() {
+	public void toggleRemoveMode(BaseEventData data) {
 		Cursor.removeMode = !Cursor.removeMode;
-		// TODO: Change the text of "Remove Mode" on HUD too?
+		close ();
 	}
 
 
