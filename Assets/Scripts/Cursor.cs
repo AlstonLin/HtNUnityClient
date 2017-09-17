@@ -267,8 +267,7 @@ public class Cursor : StateChangeListener {
 		GameObject plane = new GameObject ();
 		plane.AddComponent<MeshFilter>();
 		plane.AddComponent<MeshRenderer>();
-		plane.AddComponent<MeshCollider> ();
-		plane.GetComponent<MeshCollider> ().convex = true;
+		plane.AddComponent<BoxCollider> ();
 		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
 		mesh.vertices = new Vector3[] {
 			new Vector3 (0, 0, 0), // 0
@@ -325,8 +324,7 @@ public class Cursor : StateChangeListener {
 		GameObject plane = new GameObject ();
 		plane.AddComponent<MeshFilter>();
 		plane.AddComponent<MeshRenderer>();
-		plane.AddComponent<MeshCollider> ();
-		plane.GetComponent<MeshCollider> ().convex = true;
+		plane.AddComponent<BoxCollider> ();
 		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
 		mesh.vertices = new Vector3[] {
 			new Vector3 (0, 0, 0), // 0
@@ -352,8 +350,7 @@ public class Cursor : StateChangeListener {
 		GameObject plane = new GameObject ();
 		plane.AddComponent<MeshFilter>();
 		plane.AddComponent<MeshRenderer>();
-		plane.AddComponent<MeshCollider> ();
-		plane.GetComponent<MeshCollider> ().convex = true;
+		plane.AddComponent<BoxCollider> ();
 		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
 		mesh.vertices = new Vector3[] {
 			new Vector3 (0, 0, 0), // 0
@@ -376,8 +373,7 @@ public class Cursor : StateChangeListener {
 		GameObject plane = new GameObject ();
 		plane.AddComponent<MeshFilter>();
 		plane.AddComponent<MeshRenderer>();
-		plane.AddComponent<MeshCollider> ();
-		plane.GetComponent<MeshCollider> ().convex = true;
+		plane.AddComponent<BoxCollider> ();
 		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
 		mesh.vertices = new Vector3[] {
 			new Vector3 (0, 0, 0), // 0
