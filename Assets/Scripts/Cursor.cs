@@ -58,6 +58,7 @@ public class Cursor : StateChangeListener {
 		obj.transform.position.Set (block.location.x, block.location.y, block.location.z);
 		obj.transform.rotation.Set (block.rotation.x, block.rotation.y, block.rotation.z, block.rotation.w);
 		obj.transform.localScale.Set (block.scale.x, block.scale.y, block.scale.z);
+		GameObject.Instantiate (obj);
 	}
 	public override void onBlockRemoved(Block block) {
 		Debug.Log("Removed");
