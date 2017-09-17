@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.7267671, g: 0.789589, b: 0.8523601, a: 1}
+  m_IndirectSpecularColor: {r: 0.72674954, g: 0.7895706, b: 0.85234123, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -346,6 +346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 180231183}
   - component: {fileID: 180231182}
+  - component: {fileID: 180231184}
   m_Layer: 0
   m_Name: FirebaseConnector
   m_TagString: Untagged
@@ -364,10 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 378c35cb3befe3149ac7ef0df4c154bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldWidth: 100
-  worldHeight: 100
-  worldLength: 100
-  resetWorldOnStart: 0
+  OptimisticPlacing: 1
 --- !u!4 &180231183
 Transform:
   m_ObjectHideFlags: 0
@@ -381,6 +379,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &180231184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 180231181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e26bc6e18dfd6d6489bcc8d9092d751c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerPrefab: {fileID: 1103025826126822, guid: 4510a489b8b91224d98265f420852975,
+    type: 2}
 --- !u!1 &288348531
 GameObject:
   m_ObjectHideFlags: 0

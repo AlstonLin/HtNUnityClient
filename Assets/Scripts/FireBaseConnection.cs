@@ -9,13 +9,16 @@ using System.Linq;
 
 public class FireBaseConnection {
 
-	public const int ADD_BLOCK = 0;
-	public const int REMOVE_BLOCK = 1;
+	public const int ADD = 0;
+	public const int REMOVE = 1;
+	public const int CHANGE = 2;
 
 	DatabaseReference db;
 	DatabaseReference world;
-	Action<int, Block> onUpdate;
-	public FireBaseConnection (Action<int, Block> onUpdate) {
+	DatabaseReference players;
+	Action<int, Block> onUpdateBlock;
+	Action<int, Player> onUpdatePlayer;
+	public FireBaseConnection (Action<int, Block> onUpdateBlock, Action<int, Player> onUpdatePlayer) {
 		// Start the Firebase db instance
 		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl(
 			"https://hackthenorth-a4e06.firebaseio.com/"
@@ -24,43 +27,33 @@ public class FireBaseConnection {
 		// Set references
 		db = FirebaseDatabase.DefaultInstance.RootReference;
 		world = db.Child("world");
+		players = db.Child("players");
+		
 
 		world.ChildAdded += (object s, ChildChangedEventArgs c) => 
-			Handle(ADD_BLOCK, s, c);
+			HandleBlockChange(ADD, s, c);
 
 		world.ChildRemoved += (object s, ChildChangedEventArgs c) => 
-			Handle(REMOVE_BLOCK, s, c);
+			HandleBlockChange(REMOVE, s, c);
 
-		this.onUpdate = onUpdate;
+		players.ChildAdded += (object s, ChildChangedEventArgs c) =>
+			HandlePlayerChange(ADD, s, c);
+		
+		players.ChildChanged += (object s, ChildChangedEventArgs c) =>
+			HandlePlayerChange(CHANGE, s, c);
+		
+		players.ChildRemoved += (object s, ChildChangedEventArgs c) =>
+			HandlePlayerChange(REMOVE, s, c);
+
+
+		this.onUpdateBlock = onUpdateBlock;
+		this.onUpdatePlayer = onUpdatePlayer;
 
 		// importCurrentWorld();
 	}
-
-	// public void importCurrentWorld(){
-	// 	Debug.Log("Import current world");
-	// 	world
-	// 		.GetValueAsync()
-	// 		.ContinueWith(task => {
-	// 			if(task.IsFaulted){
-	// 				Debug.Log("Import faulted");
-	// 				return;
-	// 			};
-
-	// 			if(task.IsCompleted){
-	// 				Debug.Log("Fetched world Data");
-
-	// 				Dictionary<string, string> blockDict = JsonUtility.FromJson<Dictionary<string, string>>(task.Result.GetRawJsonValue());
-					
-	// 				foreach(KeyValuePair<string, string> b in blockDict){
-	// 					Debug.Log(b.Value);
-	// 				}
-
-	// 				Debug.Log(blockDict.Keys.Count);
-
-	// 			}
-	// 		});
-	// }
-
+	/**
+		====================== Block Methods ===================
+	 */
 	public void addBlock(Block block){
 		world.Child(block.id).SetRawJsonValueAsync(block.toJson());
 	}
@@ -69,10 +62,36 @@ public class FireBaseConnection {
 		world.Child(block.id).RemoveValueAsync();
 	}
 
-	public void Handle(int eventAction, object sender, ChildChangedEventArgs args){
+	public void HandleBlockChange(int eventAction, object sender, ChildChangedEventArgs args){
 		string json = args.Snapshot.GetRawJsonValue();
 		Block block = new Block(json);
 		
-		onUpdate(eventAction, block);
+		onUpdateBlock(eventAction, block);
 	}
+
+	/**
+		========================= Player Methods ==================
+	 */
+
+	 public void addPlayer(Player player) {
+		 players.Child(player.id).SetRawJsonValueAsync(player.toJson());
+	 }
+
+	 public void removePlayer(Player player) {
+		 players.Child(player.id).RemoveValueAsync();
+	 }
+
+	public void HandlePlayerChange(int eventAction, object sender, ChildChangedEventArgs args){
+
+		string json = args.Snapshot.GetRawJsonValue();
+		Player player = new Player(json);
+
+		onUpdatePlayer(eventAction, player);
+
+	}
+
+	public void changePlayer(Player player) {
+		players.Child(player.id).SetRawJsonValueAsync(player.toJson());
+	}
+	
 }
