@@ -17,7 +17,7 @@ public class SelectColor : MonoBehaviour {
 
 	public void onSelectColor(BaseEventData data) {
 		string name = data.selectedObject.name;
-		gameObject.transform.parent.gameObject.GetComponent<ColorPickerController> ().close ();
+		gameObject.transform.parent.gameObject.GetComponent<HUDController> ().close ();
 
 		switch (name) {
 		case "Blue": 
