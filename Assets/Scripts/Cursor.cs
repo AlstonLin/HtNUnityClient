@@ -120,8 +120,8 @@ public class Cursor : StateChangeListener {
 			// depth is now in [-180, 180)
 			depth = depth+180;
 			// depth is now in [0, 360)
-			depth = depth/360f * 6 - 2;
-			// depth is now in [-2, 4)
+			depth = depth/360f * 8 - 3;
+			// depth is now in [-2, 5)
 			depth = Mathf.Exp(depth);
 
 			// The direction vector * 3
