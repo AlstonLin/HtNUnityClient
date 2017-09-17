@@ -6,7 +6,7 @@ public class Cursor : StateChangeListener {
 	const float PLANE_WIDTH = 0.01f;
 
 	public static Color currentColor = Color.white;
-	public static string currentShape = "Square";
+	public static int currentShape = Shapes.SQUARE_FACE;
 	public static bool hudNotOpen = true;
 
 	// Caches
@@ -44,6 +44,12 @@ public class Cursor : StateChangeListener {
 		switch (block.shape) {
 		case Shapes.SQUARE_FACE:
 			obj = GameObject.CreatePrimitive (PrimitiveType.Cube);
+			break;
+		case Shapes.CENTER_TRIANGLE:
+			obj = createCenterTrianglePrim ();
+			break;
+		case Shapes.SLANT_SQUARE:
+			obj = createSlantedSquarePrim ();
 			break;
 		default:
 			obj = GameObject.CreatePrimitive (PrimitiveType.Cube);
@@ -109,8 +115,14 @@ public class Cursor : StateChangeListener {
 				// Finds the approximate axis that is being looked from
 				float max = Mathf.Max (Mathf.Max (Mathf.Abs (delta.x), Mathf.Abs (delta.y)), Mathf.Abs (delta.z));
 				switch (currentShape) {
-				case "Square":
+				case Shapes.SQUARE_FACE:
 					createSquare (delta, target, max);
+					break;
+				case Shapes.CENTER_TRIANGLE:
+					createCenterTriangle (delta, target, max);
+					break;
+				case Shapes.SLANT_SQUARE:
+					createSlantedSquare (delta, target, max);
 					break;
 				default: 
 					createSquare (delta, target, max);
@@ -148,7 +160,6 @@ public class Cursor : StateChangeListener {
 								GameObject.Instantiate (plane);
 
 								int intColor;
-								int intShape;
 								if (currentColor == Color.white) {
 									intColor = FaceColors.WHITE;
 								} else if(currentColor == Color.blue) {
@@ -161,16 +172,7 @@ public class Cursor : StateChangeListener {
 									intColor = FaceColors.WHITE;
 								}
 
-								switch (currentShape) {
-								case "Square":
-									intShape = Shapes.SQUARE_FACE;
-									break;
-								default:
-									intShape = Shapes.SQUARE_FACE;
-									break;
-								}
-
-								Block block = new Block (plane.transform.rotation, plane.transform.position, plane.transform.localScale, intColor, intShape);
+								Block block = new Block (plane.transform.rotation, plane.transform.position, plane.transform.localScale, intColor, currentShape);
 								state.addBlockToState (block);
 							}
 						}
@@ -197,6 +199,115 @@ public class Cursor : StateChangeListener {
 			// Creates a highlight plane on x-y axis
 			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, Mathf.Ceil (target.y) - 0.5f, (float)Mathf.Floor (target.z));
 			plane.transform.localScale = new Vector3 (1, 1, PLANE_WIDTH);
+		}
+	}
+
+	private GameObject createCenterTrianglePrim() {
+		GameObject plane = new GameObject ();
+		plane.AddComponent<MeshFilter>();
+		plane.AddComponent<MeshRenderer>();
+		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
+		mesh.vertices = new Vector3[] {
+			new Vector3 (-0.5f, 0, 0), // 0
+			new Vector3 (0, 1, 0.5f), // 1
+			new Vector3 (-0.5f, 0, 1), // 2
+			new Vector3 (-0.5f+PLANE_WIDTH, 0, 0), // 3
+			new Vector3 (0+PLANE_WIDTH, 1, 0.5f), // 4
+			new Vector3 (-0.5f+PLANE_WIDTH, 0, 1)  // 5
+		};
+		mesh.triangles = new int[] { 0, 1, 2,  0, 3, 1, 1, 3, 4,  0, 2, 3, 2, 5, 3,  1, 4, 2, 4, 5, 2,  3, 5, 4 };
+		return plane;
+	}
+
+	private void createCenterTriangle(Vector3 delta, Vector3 target, float max) {
+		plane = createCenterTrianglePrim ();
+		plane.GetComponent<Renderer> ().material.color = currentColor;
+		if (max == Mathf.Abs (delta.x)) {
+			// Creates a highlight plane on y-z axis
+			plane.transform.position = new Vector3 ((float)Mathf.Floor (target.x), Mathf.Ceil (target.y) - 0.5f, Mathf.Ceil (target.z) - 0.5f);
+			if (delta.x >= 0) {
+				Debug.Log ("x-axis +");
+				plane.transform.rotation = Quaternion.AngleAxis (0, Vector3.up);
+			} else {
+				Debug.Log ("x-axis -");
+				plane.transform.rotation = Quaternion.AngleAxis (180, Vector3.up);
+			}
+		} else if (max == Mathf.Abs (delta.y)) {
+			// Creates a highlight plane on x-z axis
+			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, (float)Mathf.Floor (target.y), Mathf.Ceil (target.z) - 0.5f);
+			if (delta.y >= 0) {
+				Debug.Log ("y-axis +");
+				plane.transform.rotation = Quaternion.AngleAxis (90, Vector3.up);
+			} else {
+				Debug.Log ("y-axis -");
+				plane.transform.rotation = Quaternion.AngleAxis (270, Vector3.up);
+			}
+		} else { // delta.z is max
+			// Creates a highlight plane on x-y axis
+			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, Mathf.Ceil (target.y) - 0.5f, (float)Mathf.Floor (target.z));
+			if (delta.z >= 0) {
+				Debug.Log ("z-axis +");
+				plane.transform.rotation = Quaternion.AngleAxis (270, Vector3.up);
+			} else {
+				Debug.Log ("z-axis -");
+				plane.transform.rotation = Quaternion.AngleAxis (90, Vector3.up);
+			}
+		}
+	}
+
+	private GameObject createSlantedSquarePrim() {
+		GameObject plane = new GameObject ();
+		plane.AddComponent<MeshFilter>();
+		plane.AddComponent<MeshRenderer>();
+		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
+		mesh.vertices = new Vector3[] {
+			new Vector3 (-0.5f, 0, 0), // 0
+			new Vector3 (0.5f, 1, 0), // 1
+			new Vector3 (0.5f, 1, 1), // 2
+			new Vector3 (-0.5f, 0, 1), // 3
+
+			new Vector3 (-0.5f+PLANE_WIDTH, 0, 0), // 0
+			new Vector3 (0.5f+PLANE_WIDTH, 1, 0), // 1
+			new Vector3 (0.5f+PLANE_WIDTH, 1, 1), // 2
+			new Vector3 (-0.5f+PLANE_WIDTH, 0, 1), // 3
+		};
+		mesh.triangles = new int[] { 0, 1, 3, 3, 1, 2,  6, 5, 7, 7, 5, 4 };
+		return plane;
+	}
+
+	private void createSlantedSquare(Vector3 delta, Vector3 target, float max) {
+		plane = createSlantedSquarePrim ();
+		plane.GetComponent<Renderer> ().material.color = currentColor;
+		if (max == Mathf.Abs (delta.x)) {
+			// Creates a highlight plane on y-z axis
+			plane.transform.position = new Vector3 ((float)Mathf.Floor (target.x), Mathf.Ceil (target.y) - 0.5f, Mathf.Ceil (target.z) - 0.5f);
+			if (delta.x >= 0) {
+				Debug.Log ("x-axis +");
+				plane.transform.rotation = Quaternion.AngleAxis (0, Vector3.up);
+			} else {
+				Debug.Log ("x-axis -");
+				plane.transform.rotation = Quaternion.AngleAxis (180, Vector3.up);
+			}
+		} else if (max == Mathf.Abs (delta.y)) {
+			// Creates a highlight plane on x-z axis
+			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, (float)Mathf.Floor (target.y), Mathf.Ceil (target.z) - 0.5f);
+			if (delta.y >= 0) {
+				Debug.Log ("y-axis +");
+				plane.transform.rotation = Quaternion.AngleAxis (90, Vector3.up);
+			} else {
+				Debug.Log ("y-axis -");
+				plane.transform.rotation = Quaternion.AngleAxis (270, Vector3.up);
+			}
+		} else { // delta.z is max
+			// Creates a highlight plane on x-y axis
+			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, Mathf.Ceil (target.y) - 0.5f, (float)Mathf.Floor (target.z));
+			if (delta.z >= 0) {
+				Debug.Log ("z-axis +");
+				plane.transform.rotation = Quaternion.AngleAxis (270, Vector3.up);
+			} else {
+				Debug.Log ("z-axis -");
+				plane.transform.rotation = Quaternion.AngleAxis (90, Vector3.up);
+			}
 		}
 	}
 }
