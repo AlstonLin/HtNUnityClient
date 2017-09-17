@@ -8,6 +8,7 @@ public class Cursor : MonoBehaviour {
 	public static Color currentColor = Color.white;
 	public static bool hudNotOpen = true;
 
+	Vector3 lastClickTarget;
 	GameObject plane = null;
 
 	// Clicks
@@ -62,6 +63,7 @@ public class Cursor : MonoBehaviour {
 				if (Input.GetTouch (0).phase == TouchPhase.Ended) {
 					if (touchTime < LONG_CLICK_TIME) { // Click
 						numClicks += 1;
+						lastClickTarget = plane.transform.position;
 					} else {
 						numClicks = 0;
 						betweenTouchTime = 0;
@@ -72,8 +74,10 @@ public class Cursor : MonoBehaviour {
 				if (numClicks > 0) {
 					betweenTouchTime += Time.deltaTime;
 					if (betweenTouchTime > DOUBLE_CLICK_BETWEEN_TIME) {
-						if (numClicks == 1)
+						if (numClicks == 1) {
+							plane.transform.position = lastClickTarget;
 							GameObject.Instantiate (plane);
+						}
 						numClicks = 0;
 						betweenTouchTime = 0;
 					}
