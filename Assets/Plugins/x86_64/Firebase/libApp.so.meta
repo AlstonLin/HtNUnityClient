@@ -1,7 +1,8 @@
 fileFormatVersion: 2
-guid: 38a97385f6414d6487a3b199875f79e1
+guid: ab67ec9a899d4a38927c484231826e65
 labels:
 - gvh
+- gvh_linuxlibname-App
 - gvh_version-4.1.0
 PluginImporter:
   serializedVersion: 2
@@ -14,7 +15,7 @@ PluginImporter:
       first:
         Android: Android
       second:
-        enabled: 1
+        enabled: 0
         settings:
           CPU: AnyCPU
     data:
@@ -29,14 +30,14 @@ PluginImporter:
       second:
         enabled: 1
         settings:
-          CPU: AnyCPU
+          CPU: x86_64
           DefaultValueInitialized: true
           OS: AnyOS
     data:
       first:
         Facebook: Win
       second:
-        enabled: 1
+        enabled: 0
         settings:
           CPU: AnyCPU
     data:
@@ -50,7 +51,7 @@ PluginImporter:
       first:
         Standalone: Linux
       second:
-        enabled: 1
+        enabled: 0
         settings:
           CPU: x86
     data:
@@ -66,12 +67,12 @@ PluginImporter:
       second:
         enabled: 1
         settings:
-          CPU: AnyCPU
+          CPU: x86_64
     data:
       first:
         Standalone: OSXIntel
       second:
-        enabled: 1
+        enabled: 0
         settings:
           CPU: AnyCPU
     data:
@@ -87,12 +88,12 @@ PluginImporter:
       second:
         enabled: 1
         settings:
-          CPU: AnyCPU
+          CPU: x86_64
     data:
       first:
         Standalone: Win
       second:
-        enabled: 1
+        enabled: 0
         settings:
           CPU: AnyCPU
     data:
@@ -125,7 +126,7 @@ PluginImporter:
       first:
         iPhone: iOS
       second:
-        enabled: 1
+        enabled: 0
         settings:
           CompileFlags: 
           FrameworkDependencies: 

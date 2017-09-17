@@ -9,6 +9,10 @@ public class Cursor : MonoBehaviour {
 
 	GameObject plane = null;
 
+	// Clicks
+	const float LONG_CLICK_TIME = 0.25f;
+	float touchTime = 0f;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -37,10 +41,15 @@ public class Cursor : MonoBehaviour {
 			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, Mathf.Ceil (target.y) - 0.5f, (float) Mathf.Floor(target.z));
 			plane.transform.localScale = new Vector3 (1, 1, PLANE_WIDTH);
 		}
-
-		//place block
-		if (Input.touchCount > 0 || Input.GetMouseButtonDown (0)) {
-			GameObject.Instantiate (plane);
+		// Touch detected
+		if (Input.touchCount > 0) {
+			touchTime += Input.GetTouch(0).deltaTime;
+			if (Input.GetTouch (0).phase == TouchPhase.Ended) {
+				if (touchTime < LONG_CLICK_TIME) {
+					GameObject.Instantiate (plane);
+				}
+				touchTime = 0;
+			}
 		}
 	}
 }
