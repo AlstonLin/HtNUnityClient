@@ -36,7 +36,6 @@ public class Cursor : MonoBehaviour {
 			} else if(depth >= 270) {
 				depth = (depth - 180) / 60;
 			}	
-			print (depth);
 			// The direction vector * 3
 			Vector3 delta = Camera.main.transform.forward.normalized * depth;
 			Vector3 target = Camera.main.gameObject.transform.position + delta;
