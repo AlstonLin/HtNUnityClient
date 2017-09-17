@@ -28,11 +28,16 @@ public class State: MonoBehaviour {
       (int eventCode, Block block) => updateStateFromFirebase(eventCode, block)
     );
 
-    blocks = new List<Block>();
+    fireBaseConnection.removeBlock(new Block(
+      new Quaternion(1,2,3,4),
+      new Vector3(1,2,3),
+      new Vector3(1,2,3),
+      1,
+      1,
+      "1LiOCC5s"
+    ));
 
-    // test
-    Block testBlock = new Block(new Quaternion(1,2,3,4), new Vector3(1,2,3), 1,1);
-    addBlockToState(testBlock);
+    blocks = new List<Block>();
   }
 
   public void addListener(StateChangeListener listener){
@@ -41,12 +46,13 @@ public class State: MonoBehaviour {
 
   public void updateStateFromFirebase(int eventCode, Block block){
     switch(eventCode){
-      case FireBaseConnection.ADD_BLOCK:
-        if(OptimisticPlacing){
-          int i = blocks.FindIndex((b) => b.id == block.id);
-          if(i >= 0) return; // Don't broadcast to client if the state is already matched
-        }
-        blocks.Add(block);
+		case FireBaseConnection.ADD_BLOCK:
+			if (OptimisticPlacing) {
+				int i = blocks.FindIndex ((b) => b.id == block.id);
+				if (i >= 0)
+					return; // Don't broadcast to client if the state is already matched
+			}
+			blocks.Add (block);
         listeners.ForEach((listener) => listener.onBlockAdded(block));
         return;
       case FireBaseConnection.REMOVE_BLOCK:
@@ -63,6 +69,14 @@ public class State: MonoBehaviour {
       blocks.Add(block);
 
     fireBaseConnection.addBlock(block);
+  }
+
+  public void removeBlockFromState(Block block){
+    int idx = blocks.FindIndex((b) => b.id == block.id);
+
+    if(idx >= 0) blocks.RemoveAt(idx);
+
+    fireBaseConnection.removeBlock(block);
   }
 
   public List<Block> getBlocks(){

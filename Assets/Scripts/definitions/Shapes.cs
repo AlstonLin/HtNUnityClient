@@ -1,5 +1,5 @@
 public class Shapes {
-  public static readonly int SQUARE_FACE = 1;
-  public static readonly int FLAT_TRIANGLE = 2;
+  public const int SQUARE_FACE = 1;
+  public const int FLAT_TRIANGLE = 2;
 
 }

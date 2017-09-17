@@ -5,6 +5,8 @@ using Firebase.Database;
 using Firebase.Unity.Editor;
 using UnityEngine;
 using System;
+using System.Linq;
+
 public class FireBaseConnection {
 
 	public const int ADD_BLOCK = 0;
@@ -30,14 +32,41 @@ public class FireBaseConnection {
 			Handle(REMOVE_BLOCK, s, c);
 
 		this.onUpdate = onUpdate;
+
+		// importCurrentWorld();
 	}
 
-	public void importCurrentWorld(){
-		
-	}
+	// public void importCurrentWorld(){
+	// 	Debug.Log("Import current world");
+	// 	world
+	// 		.GetValueAsync()
+	// 		.ContinueWith(task => {
+	// 			if(task.IsFaulted){
+	// 				Debug.Log("Import faulted");
+	// 				return;
+	// 			};
+
+	// 			if(task.IsCompleted){
+	// 				Debug.Log("Fetched world Data");
+
+	// 				Dictionary<string, string> blockDict = JsonUtility.FromJson<Dictionary<string, string>>(task.Result.GetRawJsonValue());
+					
+	// 				foreach(KeyValuePair<string, string> b in blockDict){
+	// 					Debug.Log(b.Value);
+	// 				}
+
+	// 				Debug.Log(blockDict.Keys.Count);
+
+	// 			}
+	// 		});
+	// }
 
 	public void addBlock(Block block){
 		world.Child(block.id).SetRawJsonValueAsync(block.toJson());
+	}
+
+	public void removeBlock(Block block){
+		world.Child(block.id).RemoveValueAsync();
 	}
 
 	public void Handle(int eventAction, object sender, ChildChangedEventArgs args){
