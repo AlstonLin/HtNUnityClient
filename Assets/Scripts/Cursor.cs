@@ -9,6 +9,7 @@ public class Cursor : StateChangeListener {
 	public static string currentShape = "Square";
 	public static bool hudNotOpen = true;
 
+	Vector3 lastClickTarget;
 	GameObject plane = null;
 	State state;
 
@@ -99,6 +100,7 @@ public class Cursor : StateChangeListener {
 				if (Input.GetTouch (0).phase == TouchPhase.Ended) {
 					if (touchTime < LONG_CLICK_TIME) { // Click
 						numClicks += 1;
+						lastClickTarget = plane.transform.position;
 					} else {
 						numClicks = 0;
 						betweenTouchTime = 0;
@@ -110,6 +112,7 @@ public class Cursor : StateChangeListener {
 					betweenTouchTime += Time.deltaTime;
 					if (betweenTouchTime > DOUBLE_CLICK_BETWEEN_TIME || Input.GetMouseButtonDown(0)) {
 						if (numClicks == 1 || Input.GetMouseButtonDown(0)) {
+							plane.transform.position = lastClickTarget;
 							GameObject.Instantiate (plane);
 
 							int intColor;
