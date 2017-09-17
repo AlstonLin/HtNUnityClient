@@ -65,6 +65,10 @@ public class FireBaseConnection {
 		world.Child(block.id).SetRawJsonValueAsync(block.toJson());
 	}
 
+	public void removeBlock(Block block){
+		world.Child(block.id).RemoveValueAsync();
+	}
+
 	public void Handle(int eventAction, object sender, ChildChangedEventArgs args){
 		string json = args.Snapshot.GetRawJsonValue();
 		Block block = new Block(json);

@@ -28,6 +28,15 @@ public class State: MonoBehaviour {
       (int eventCode, Block block) => updateStateFromFirebase(eventCode, block)
     );
 
+    fireBaseConnection.removeBlock(new Block(
+      new Quaternion(1,2,3,4),
+      new Vector3(1,2,3),
+      new Vector3(1,2,3),
+      1,
+      1,
+      "1LiOCC5s"
+    ));
+
     blocks = new List<Block>();
   }
 
@@ -62,7 +71,13 @@ public class State: MonoBehaviour {
     fireBaseConnection.addBlock(block);
   }
 
+  public void removeBlockFromState(Block block){
+    int idx = blocks.FindIndex((b) => b.id == block.id);
 
+    if(idx >= 0) blocks.RemoveAt(idx);
+
+    fireBaseConnection.removeBlock(block);
+  }
 
   public List<Block> getBlocks(){
     return blocks;
