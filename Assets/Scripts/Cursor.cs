@@ -78,10 +78,10 @@ public class Cursor : StateChangeListener {
 			obj.GetComponent<Renderer> ().material.color = Color.green;
 			break;
 		case FaceColors.PURPLE:
-			obj.GetComponent<Renderer> ().material.color = new Color(127f/255f, 0, 1);
+			obj.GetComponent<Renderer> ().material.color = new Color(127f/255f, 0f, 1f);
 			break;
 		case FaceColors.ORANGE:
-			obj.GetComponent<Renderer> ().material.color = new Color(1, 127f/255f, 0);
+			obj.GetComponent<Renderer> ().material.color = new Color(1f, 127f/255f, 0f);
 			break;
 		case FaceColors.BLACK:
 			obj.GetComponent<Renderer> ().material.color = Color.black;
@@ -98,6 +98,7 @@ public class Cursor : StateChangeListener {
 	}
 	public override void onBlockRemoved(Block block) {
 		Destroy (ActiveBlocksDictionary.getObj (block.id));
+		ActiveBlocksDictionary.removeObj (block.id);
 	}
 
 	// Update is called once per frame
@@ -188,6 +189,7 @@ public class Cursor : StateChangeListener {
 								Block block = new Block (lastSelectedTarget.transform.rotation, lastSelectedTarget.transform.position,
 									lastSelectedTarget.transform.localScale, 0, 0, lastSelectedTarget.name);
 								state.removeBlockFromState (block);
+								ActiveBlocksDictionary.removeObj (block.id);
 								lastSelectedTarget = null;
 							} else if (!removeMode) {
 								plane.transform.position = lastClickTarget;
