@@ -76,6 +76,12 @@ public class HUDController : MonoBehaviour {
 		HUD.SetActive (false);
 	}
 
+	public void toggleRemoveMode() {
+		Cursor.removeMode = !Cursor.removeMode;
+		// TODO: Change the text of "Remove Mode" on HUD too?
+	}
+
+
 	public void close() {
 		Cursor.hudNotOpen = true;
 		hudOpen = false;
