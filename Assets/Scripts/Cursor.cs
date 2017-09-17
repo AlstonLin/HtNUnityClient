@@ -104,7 +104,7 @@ public class Cursor : StateChangeListener {
 		if (plane) Destroy (plane);
 		GameObject hitObject = null;
 		if (lastHighlightedColor != null && lastHighlightedTarget != null) {
-			lastHighlightedTarget.GetComponent<Renderer> ().material.color = lastHighlightedColor;
+			lastHighlightedTarget.GetComponent<Renderer> ().sharedMaterial.color = lastHighlightedColor;
 		}
 		//if hud is not open, render cursor block
 		if (hudNotOpen) {
@@ -224,7 +224,7 @@ public class Cursor : StateChangeListener {
 
 	private void createSquare(Vector3 delta, Vector3 target, float max) {
 		plane = GameObject.CreatePrimitive (PrimitiveType.Cube);
-		plane.GetComponent<Renderer> ().material.color = currentColor;
+		plane.GetComponent<Renderer> ().sharedMaterial.color = currentColor;
 		if (max == Mathf.Abs (delta.x)) {
 			// Creates a highlight plane on y-z axis
 			plane.transform.position = new Vector3 ((float)Mathf.Floor (target.x), Mathf.Ceil (target.y) - 0.5f, Mathf.Ceil (target.z) - 0.5f);
@@ -244,7 +244,7 @@ public class Cursor : StateChangeListener {
 		GameObject plane = new GameObject ();
 		plane.AddComponent<MeshFilter>();
 		plane.AddComponent<MeshRenderer>();
-		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
+		Mesh mesh = plane.GetComponent<MeshFilter> ().sharedMesh;
 		mesh.vertices = new Vector3[] {
 			new Vector3 (0, 0, 0), // 0
 			new Vector3 (0.5f, 1, 0.5f), // 1
@@ -258,7 +258,7 @@ public class Cursor : StateChangeListener {
 	}
 
 	private void setupShape(GameObject plane, Vector3 delta, Vector3 target, float max) {
-		plane.GetComponent<Renderer> ().material.color = currentColor;
+		plane.GetComponent<Renderer> ().sharedMaterial.color = currentColor;
 		// unlike Cube, the center of the mesh is on the sides
 		plane.transform.position = new Vector3 (Mathf.Floor (target.x), Mathf.Floor (target.y), Mathf.Floor (target.z));
 		if (max == Mathf.Abs (delta.x)) {
