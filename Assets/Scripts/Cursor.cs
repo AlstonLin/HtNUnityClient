@@ -161,7 +161,7 @@ public class Cursor : StateChangeListener {
 							} else if (!removeMode) {
 								plane.transform.position = lastClickTarget;
 								GameObject newPlane = GameObject.Instantiate (plane);
-								newPlane.name = GenerateHash.generateHash ();
+								newPlane.name = HashGenerator.generateHash ();
 								ActiveBlocksDictionary.addToDict (newPlane.name, newPlane);
 
 								int intColor;
