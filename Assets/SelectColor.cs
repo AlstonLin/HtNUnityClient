@@ -26,9 +26,6 @@ public class SelectColor : MonoBehaviour {
 		case "White":
 			Cursor.currentColor = Color.white;
 			break;
-		case "Red":
-			Cursor.currentColor = Color.red;
-			break;
 		case "Yellow":
 			Cursor.currentColor = Color.yellow;
 			break;

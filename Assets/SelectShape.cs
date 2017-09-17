@@ -19,5 +19,20 @@ public class SelectShape : MonoBehaviour {
 		string name = data.selectedObject.name;
 		gameObject.transform.parent.gameObject.GetComponent<HUDController> ().close ();
 
+		// name is name of object under "ShapePicker"
+		switch (name) {
+		case "Square": 
+			Cursor.currentShape = Shapes.SQUARE_FACE;
+			break;
+		case "CenterTriangle":
+			Cursor.currentShape = Shapes.CENTER_TRIANGLE;
+			break;
+		case "SlantSquare":
+			Cursor.currentShape = Shapes.SLANT_SQUARE;
+			break;
+		default:
+			print("No shape \"" + name + "\" found in ShapePicker");
+			break;
+		}
 	}
 }
