@@ -238,17 +238,14 @@ public class Cursor : StateChangeListener {
 			// Creates a highlight plane on y-z axis
 			plane.transform.position = new Vector3 ((float)Mathf.Floor (target.x), Mathf.Ceil (target.y) - 0.5f, Mathf.Ceil (target.z) - 0.5f);
 			plane.transform.localScale = new Vector3 (PLANE_WIDTH, 1, 1);
-			Debug.Log ("x-axis");
 		} else if (max == Mathf.Abs (delta.y)) {
 			// Creates a highlight plane on x-z axis
 			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, (float)Mathf.Floor (target.y), Mathf.Ceil (target.z) - 0.5f);
 			plane.transform.localScale = new Vector3 (1, PLANE_WIDTH, 1);
-			Debug.Log ("y-axis");
 		} else { // delta.z is max
 			// Creates a highlight plane on x-y axis
 			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, Mathf.Ceil (target.y) - 0.5f, (float)Mathf.Floor (target.z));
 			plane.transform.localScale = new Vector3 (1, 1, PLANE_WIDTH);
-			Debug.Log ("z-axis");
 		}
 	}
 

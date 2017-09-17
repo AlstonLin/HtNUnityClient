@@ -25,7 +25,7 @@ public class Block {
     this.location = block.location;
 	this.scale = block.scale;
     this.color = block.color;
-    this.shape = block.color;
+    this.shape = block.shape;
     this.id = block.id;
   }
 
