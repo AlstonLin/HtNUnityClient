@@ -1,56 +1,50 @@
 using UnityEngine;
 
 public class Block {
-  [SerializeField]
-  private int[] shapes = new int[6];
-  
-  [SerializeField]
-  private int[] colors = new int[6];
+  public Quaternion rotation;
+  public Vector3 location;
+  public int color;
+  public int shape;
+  public string id;
 
-  private readonly int DEFAULT_FACE = FaceShapes.EMPTY_FACE;
-  private readonly int DEFAULT_COLOR = FaceColors.WHITE;
-
-  public Block () {
-    for(int x = 0; x < shapes.Length; x ++){
-      shapes[x] = DEFAULT_FACE;
-      colors[x] = DEFAULT_COLOR;
-    }
+  public Block(Quaternion rotation, Vector3 location, int color, int shape, string id) {
+    this.rotation = rotation;
+    this.location = location;
+    this.color = color; 
+    this.shape = shape; 
+    this.id = id; 
   }
 
-  public Block(int[] shapes, int[] colors) {
-    this.shapes = shapes;
-    this.colors = colors;
+  public Block(Quaternion rotation, Vector3 location, int color, int shape):
+    this(rotation, location, color, shape, GenerateHash.generateHash()){}
+
+  public Block(Block block){
+    this.rotation = block.rotation;
+    this.location = block.location;
+    this.color = block.color;
+    this.shape = block.color;
+    this.id = block.id;
   }
 
-  public Block changeFace(int face, int faceShape, int faceColor){
-    if(face < 0 || face > shapes.Length){
-      throw new System.ArgumentException("Face cannot be less than 0 or more than " + shapes.Length);
-    }
-    Block block = new Block();
-    
-    for(int x = 0; x < shapes.Length; x ++){
-      if(x == face){
-        block.shapes[x] = faceShape;
-        block.colors[x] = faceColor;
-      } else {
-        block.shapes[x] = shapes[x];
-        block.colors[x] = colors[x];
-      }
-    }
+  public Block(string json): this(JsonUtility.FromJson<Block>(json)){}
 
-    return block;
+  public string toJson(){
+    return JsonUtility.ToJson(this);
+  }
+}
+
+public class GenerateHash {
+  static string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  static System.Random random = new System.Random();
+
+  public static string generateHash (){
+  char[] stringChars = new char[8];
+
+  for (int i = 0; i < stringChars.Length; i++)
+  {
+      stringChars[i] = chars[random.Next(chars.Length)];
   }
 
-  public Face getFace(int face){
-    return new Face(shapes[face], colors[face]);
+  return new string(stringChars);
   }
-
-  public int[] getFaces(){
-    int[] newArray = new int[shapes.Length];
-    
-    shapes.CopyTo(newArray, 0);
-
-    return newArray;
-  }
-
 }

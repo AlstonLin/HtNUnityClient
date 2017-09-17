@@ -7,6 +7,9 @@ using UnityEngine;
 using System;
 public class FireBaseConnection {
 
+	public const int ADD_BLOCK = 0;
+	public const int REMOVE_BLOCK = 1;
+
 	DatabaseReference db;
 	DatabaseReference world;
 	Action<int, Block> onUpdate;
@@ -20,47 +23,23 @@ public class FireBaseConnection {
 		db = FirebaseDatabase.DefaultInstance.RootReference;
 		world = db.Child("world");
 
+		world.ChildAdded += (object s, ChildChangedEventArgs c) => 
+			Handle(ADD_BLOCK, s, c);
+
+		world.ChildRemoved += (object s, ChildChangedEventArgs c) => 
+			Handle(REMOVE_BLOCK, s, c);
+
 		this.onUpdate = onUpdate;
-
-		world.ChildChanged += HandleChildChanged;
-	}
-	
-	public void updateBlock(int index, Block block){
-		string json = JsonUtility.ToJson(block);
-
-		world.Child(index + "").SetRawJsonValueAsync(json);
 	}
 
-	public void HandleChildChanged(object sender, ChildChangedEventArgs args){
-		int key = Convert.ToInt16(args.Snapshot.Key);
-		Dictionary<string, object> value = (Dictionary<string, object>) args.Snapshot.Value;
-
-		object shapesObj;
-		object colorsObj;
-
-		value.TryGetValue("shapes", out shapesObj);
-		value.TryGetValue("colors", out colorsObj);
-
-		IList shapesList = (IList)shapesObj;
-		IList colorsList = (IList)colorsObj;
-
-		int[] shapes = new int[shapesList.Count];
-		int[] colors = new int[colorsList.Count];
-
-		Debug.Log(shapesList.Count);
-		Debug.Log(colorsList.Count);
-
-		for(int x = 0; x < shapesList.Count; x ++){
-			Debug.Log(x);
-
-			Debug.Log(shapesList[x]);
-			Debug.Log(colorsList[x]);
-		}
-
-		onUpdate(key, new Block(shapes, colors));
+	public void addBlock(Block block){
+		world.Child(block.id).SetRawJsonValueAsync(block.toJson());
 	}
 
-
-
-
+	public void Handle(int eventAction, object sender, ChildChangedEventArgs args){
+		string json = args.Snapshot.GetRawJsonValue();
+		Block block = new Block(json);
+		
+		onUpdate(eventAction, block);
+	}
 }
