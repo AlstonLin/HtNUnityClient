@@ -63,31 +63,31 @@ public class Cursor : StateChangeListener {
 		}
 		switch (block.color) {
 		case FaceColors.WHITE:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.white;
+			obj.GetComponent<Renderer> ().material.color = Color.white;
 			break;
 		case FaceColors.BLUE:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.blue;
+			obj.GetComponent<Renderer> ().material.color = Color.blue;
 			break;
 		case FaceColors.YELLOW:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.yellow;
+			obj.GetComponent<Renderer> ().material.color = Color.yellow;
 			break;
 		case FaceColors.RED:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = new Color(195f/255f, 4f/255f, 4f/255f);
+			obj.GetComponent<Renderer> ().material.color = new Color(195f/255f, 4f/255f, 4f/255f);
 			break;
 		case FaceColors.GREEN:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.green;
+			obj.GetComponent<Renderer> ().material.color = Color.green;
 			break;
 		case FaceColors.PURPLE:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = new Color(127f/255f, 0, 1);
+			obj.GetComponent<Renderer> ().material.color = new Color(127f/255f, 0, 1);
 			break;
 		case FaceColors.ORANGE:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = new Color(1, 127f/255f, 0);
+			obj.GetComponent<Renderer> ().material.color = new Color(1, 127f/255f, 0);
 			break;
 		case FaceColors.BLACK:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.black;
+			obj.GetComponent<Renderer> ().material.color = Color.black;
 			break;
 		default:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.white;
+			obj.GetComponent<Renderer> ().material.color = Color.white;
 			break;
 		}
 		obj.transform.position = block.location;
@@ -104,7 +104,7 @@ public class Cursor : StateChangeListener {
 		if (plane) Destroy (plane);
 		GameObject hitObject = null;
 		if (lastHighlightedColor != null && lastHighlightedTarget != null) {
-			lastHighlightedTarget.GetComponent<Renderer> ().sharedMaterial.color = lastHighlightedColor;
+			lastHighlightedTarget.GetComponent<Renderer> ().material.color = lastHighlightedColor;
 		}
 		//if hud is not open, render cursor block
 		if (hudNotOpen) {
@@ -126,8 +126,8 @@ public class Cursor : StateChangeListener {
 				RaycastHit hit;
 				Physics.Raycast (Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity);
 				hitObject = hit.transform.gameObject;
-				lastHighlightedColor = hitObject.GetComponent<Renderer> ().sharedMaterial.color;
-				hitObject.GetComponent<Renderer> ().sharedMaterial.color = Color.red;
+				lastHighlightedColor = hitObject.GetComponent<Renderer> ().material.color;
+				hitObject.GetComponent<Renderer> ().material.color = Color.red;
 				lastHighlightedTarget = hitObject;
 			} else {
 				// Finds the approximate axis that is being looked from
@@ -224,7 +224,7 @@ public class Cursor : StateChangeListener {
 
 	private void createSquare(Vector3 delta, Vector3 target, float max) {
 		plane = GameObject.CreatePrimitive (PrimitiveType.Cube);
-		plane.GetComponent<Renderer> ().sharedMaterial.color = currentColor;
+		plane.GetComponent<Renderer> ().material.color = currentColor;
 		if (max == Mathf.Abs (delta.x)) {
 			// Creates a highlight plane on y-z axis
 			plane.transform.position = new Vector3 ((float)Mathf.Floor (target.x), Mathf.Ceil (target.y) - 0.5f, Mathf.Ceil (target.z) - 0.5f);
@@ -244,7 +244,7 @@ public class Cursor : StateChangeListener {
 		GameObject plane = new GameObject ();
 		plane.AddComponent<MeshFilter>();
 		plane.AddComponent<MeshRenderer>();
-		Mesh mesh = plane.GetComponent<MeshFilter> ().sharedMesh;
+		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
 		mesh.vertices = new Vector3[] {
 			new Vector3 (0, 0, 0), // 0
 			new Vector3 (0.5f, 1, 0.5f), // 1
@@ -258,7 +258,7 @@ public class Cursor : StateChangeListener {
 	}
 
 	private void setupShape(GameObject plane, Vector3 delta, Vector3 target, float max) {
-		plane.GetComponent<Renderer> ().sharedMaterial.color = currentColor;
+		plane.GetComponent<Renderer> ().material.color = currentColor;
 		// unlike Cube, the center of the mesh is on the sides
 		plane.transform.position = new Vector3 (Mathf.Floor (target.x), Mathf.Floor (target.y), Mathf.Floor (target.z));
 		if (max == Mathf.Abs (delta.x)) {
