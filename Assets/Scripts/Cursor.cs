@@ -93,6 +93,7 @@ public class Cursor : StateChangeListener {
 		obj.transform.position = block.location;
 		obj.transform.rotation.Set (block.rotation.x, block.rotation.y, block.rotation.z, block.rotation.w);
 		obj.transform.localScale = block.scale;
+		obj.name = block.id;
 		ActiveBlocksDictionary.addToDict (block.id, obj);
 	}
 	public override void onBlockRemoved(Block block) {
