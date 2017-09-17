@@ -15,6 +15,7 @@ public class Cursor : MonoBehaviour {
 	const float DOUBLE_CLICK_BETWEEN_TIME = 0.3f;
 	float touchTime = 0f;
 	float betweenTouchTime = 0f;
+	float depth = 3f;
 	int numClicks = 0;
 
 	// Use this for initialization
@@ -28,8 +29,16 @@ public class Cursor : MonoBehaviour {
 
 		//if hud is not open, render cursor block
 		if (hudNotOpen) {
+			//calculate depth from camera rotation
+			depth = Camera.main.transform.eulerAngles.z;
+			if (depth <= 90) {
+				depth = (depth + 180) / 60;
+			} else if(depth >= 270) {
+				depth = (depth - 180) / 60;
+			}	
+			print (depth);
 			// The direction vector * 3
-			Vector3 delta = Camera.main.transform.forward.normalized * 3;
+			Vector3 delta = Camera.main.transform.forward.normalized * depth;
 			Vector3 target = Camera.main.gameObject.transform.position + delta;
 			// Finds the approximate axis that is being looked from
 			float max = Mathf.Max (Mathf.Max (Mathf.Abs (delta.x), Mathf.Abs (delta.y)), Mathf.Abs (delta.z));
