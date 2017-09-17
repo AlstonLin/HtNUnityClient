@@ -98,13 +98,19 @@ public class Cursor : StateChangeListener {
 		if (hudNotOpen) {
 			//calculate depth from camera rotation
 			depth = Camera.main.transform.eulerAngles.z;
-			if (depth <= 90) {
-				depth = (depth + 180) / 60;
-			} else if (depth >= 270) {
-				depth = (depth - 180) / 60;
-			} else {
-				depth = 3;
+
+			// depth is 0 facing forward and switches to 360 and decreasing turning right
+			// and increases from 0 turnign left
+			if (depth >= 180) {
+				depth = depth - 360;
 			}
+			// depth is now in [-180, 180)
+			depth = depth+180;
+			// depth is now in [0, 360)
+			depth = depth/360f * 6 - 2;
+			// depth is now in [-2, 4)
+			depth = Mathf.Exp(depth);
+
 			// The direction vector * 3
 			Vector3 delta = Camera.main.transform.forward.normalized * depth;
 			Vector3 target = Camera.main.gameObject.transform.position + delta;
@@ -209,14 +215,17 @@ public class Cursor : StateChangeListener {
 			// Creates a highlight plane on y-z axis
 			plane.transform.position = new Vector3 ((float)Mathf.Floor (target.x), Mathf.Ceil (target.y) - 0.5f, Mathf.Ceil (target.z) - 0.5f);
 			plane.transform.localScale = new Vector3 (PLANE_WIDTH, 1, 1);
+			Debug.Log ("x-axis");
 		} else if (max == Mathf.Abs (delta.y)) {
 			// Creates a highlight plane on x-z axis
 			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, (float)Mathf.Floor (target.y), Mathf.Ceil (target.z) - 0.5f);
 			plane.transform.localScale = new Vector3 (1, PLANE_WIDTH, 1);
+			Debug.Log ("y-axis");
 		} else { // delta.z is max
 			// Creates a highlight plane on x-y axis
 			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, Mathf.Ceil (target.y) - 0.5f, (float)Mathf.Floor (target.z));
 			plane.transform.localScale = new Vector3 (1, 1, PLANE_WIDTH);
+			Debug.Log ("z-axis");
 		}
 	}
 
