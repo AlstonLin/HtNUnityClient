@@ -69,7 +69,7 @@ public class Cursor : StateChangeListener {
 		obj.transform.position = block.location;
 		obj.transform.rotation.Set (block.rotation.x, block.rotation.y, block.rotation.z, block.rotation.w);
 		obj.transform.localScale = block.scale;
-		ActiveBlocksDictionary.addToDict (obj);
+		ActiveBlocksDictionary.addToDict (block.id, obj);
 	}
 	public override void onBlockRemoved(Block block) {
 		Destroy (ActiveBlocksDictionary.getObj (block.id));
@@ -143,13 +143,14 @@ public class Cursor : StateChangeListener {
 							if (removeMode && lastSelectedTarget) {
 								Destroy (lastSelectedTarget);
 								Block block = new Block (lastSelectedTarget.transform.rotation, lastSelectedTarget.transform.position,
-									lastSelectedTarget.transform.localScale, 0, 0, lastSelectedTarget.GetInstanceID().ToString());
+									lastSelectedTarget.transform.localScale, 0, 0, lastSelectedTarget.name);
 								state.removeBlockFromState (block);
 								lastSelectedTarget = null;
 							} else if (!removeMode) {
 								plane.transform.position = lastClickTarget;
-								GameObject.Instantiate (plane);
-								ActiveBlocksDictionary.addToDict (plane);
+								GameObject newPlane = GameObject.Instantiate (plane);
+								newPlane.name = GenerateHash.generateHash ();
+								ActiveBlocksDictionary.addToDict (newPlane.name, newPlane);
 
 								int intColor;
 								int intShape;
@@ -174,8 +175,8 @@ public class Cursor : StateChangeListener {
 									break;
 								}
 
-								Block block = new Block (plane.transform.rotation, plane.transform.position, 
-									plane.transform.localScale, intColor, intShape, plane.GetInstanceID().ToString());
+								Block block = new Block (newPlane.transform.rotation, newPlane.transform.position, 
+									newPlane.transform.localScale, intColor, intShape, newPlane.name);
 								state.addBlockToState (block);
 							}
 						}

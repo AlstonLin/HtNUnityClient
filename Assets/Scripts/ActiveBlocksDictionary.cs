@@ -20,8 +20,8 @@ public class ActiveBlocksDictionary : MonoBehaviour
 	
 	}
 
-	public static void addToDict(GameObject obj) {
-		m_instanceMap.Add (obj.GetInstanceID().ToString(), obj);
+	public static void addToDict(string id, GameObject obj) {
+		m_instanceMap.Add (id, obj);
 	}
 
 	public static GameObject getObj(string id) {
