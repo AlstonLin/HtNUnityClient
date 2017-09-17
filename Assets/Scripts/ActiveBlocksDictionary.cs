@@ -27,5 +27,9 @@ public class ActiveBlocksDictionary : MonoBehaviour
 	public static GameObject getObj(string id) {
 		return m_instanceMap [id];
 	}
+
+	public static void removeObj(string id) {
+		m_instanceMap.Remove (id);
+	}
 }
 
