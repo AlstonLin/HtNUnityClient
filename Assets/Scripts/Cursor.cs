@@ -56,9 +56,8 @@ public class Cursor : MonoBehaviour {
 			Vector3 target = Camera.main.gameObject.transform.position + delta;
 			// Finds if a plane is selected
 			if (removeMode) {
-				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 				RaycastHit hit;
-				Physics.Raycast (ray, out hit, 100);
+				Physics.Raycast (Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity);
 				hitObject = hit.transform.gameObject;
 				lastHighlightedColor = hitObject.GetComponent<Renderer> ().material.color;
 				hitObject.GetComponent<Renderer> ().material.color = Color.red;
