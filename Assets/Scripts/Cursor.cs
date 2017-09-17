@@ -103,6 +103,7 @@ public class Cursor : StateChangeListener {
 
 	// Update is called once per frame
 	void Update () {
+		Debug.Log ("start update");
 		if (plane) Destroy (plane);
 		GameObject hitObject = null;
 		if (lastHighlightedColor != null && lastHighlightedTarget != null) {
@@ -125,19 +126,28 @@ public class Cursor : StateChangeListener {
 			// depth is now in [-2, 5)
 			depth = Mathf.Exp(depth);
 
+			Debug.Log ("depth " + depth);
+
 			// The direction vector * 3
 			Vector3 delta = Camera.main.transform.forward.normalized * depth;
 			Vector3 target = Camera.main.gameObject.transform.position + delta;
 
 			// Finds if a plane is selected
 			if (removeMode) {
+				Debug.Log ("in remove mode");
 				RaycastHit hit;
 				Physics.Raycast (Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity);
-				hitObject = hit.transform.gameObject;
-				lastHighlightedColor = hitObject.GetComponent<Renderer> ().material.color;
-				hitObject.GetComponent<Renderer> ().material.color = Color.red;
-				lastHighlightedTarget = hitObject;
+				Debug.Log ("hit is " + hit);
+				Debug.Log ("hit.transform is " + hit.transform);
+				if (hit.transform != null && hit.transform.gameObject != null) {
+					hitObject = hit.transform.gameObject;
+					Debug.Log ("hitObject is " + hitObject);
+					lastHighlightedColor = hitObject.GetComponent<Renderer> ().material.color;
+					hitObject.GetComponent<Renderer> ().material.color = Color.red;
+					lastHighlightedTarget = hitObject;
+				}
 			} else {
+				Debug.Log ("not in remove mode");
 				// Finds the approximate axis that is being looked from
 				float max = Mathf.Max (Mathf.Max (Mathf.Abs (delta.x), Mathf.Abs (delta.y)), Mathf.Abs (delta.z));
 				switch (currentShape) {
@@ -164,6 +174,7 @@ public class Cursor : StateChangeListener {
 
 			// Touch detected
 			if (Input.touchCount > 0) {
+				Debug.Log ("detected touch");
 				touchTime += Input.GetTouch (0).deltaTime;
 				if (Input.GetTouch (0).phase == TouchPhase.Ended) {
 					if (touchTime < LONG_CLICK_TIME) { // Click
@@ -185,6 +196,7 @@ public class Cursor : StateChangeListener {
 					if (betweenTouchTime > DOUBLE_CLICK_BETWEEN_TIME || Input.GetMouseButtonDown(0)) {
 						if (numClicks == 1 || Input.GetMouseButtonDown(0)) {
 							if (removeMode && lastSelectedTarget) {
+								Debug.Log ("deleting target");
 								Destroy (lastSelectedTarget);
 								Block block = new Block (lastSelectedTarget.transform.rotation, lastSelectedTarget.transform.position,
 									lastSelectedTarget.transform.localScale, 0, 0, lastSelectedTarget.name);
@@ -192,6 +204,7 @@ public class Cursor : StateChangeListener {
 								ActiveBlocksDictionary.removeObj (block.id);
 								lastSelectedTarget = null;
 							} else if (!removeMode) {
+								Debug.Log ("adding item");
 								plane.transform.position = lastClickTarget;
 								GameObject newPlane = GameObject.Instantiate (plane);
 								newPlane.name = HashGenerator.generateHash ();
@@ -229,6 +242,7 @@ public class Cursor : StateChangeListener {
 				}
 			}
 		}
+		Debug.Log ("done update");
 	}
 
 	private void createSquare(Vector3 delta, Vector3 target, float max) {
@@ -253,6 +267,8 @@ public class Cursor : StateChangeListener {
 		GameObject plane = new GameObject ();
 		plane.AddComponent<MeshFilter>();
 		plane.AddComponent<MeshRenderer>();
+		plane.AddComponent<MeshCollider> ();
+		plane.GetComponent<MeshCollider> ().convex = true;
 		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
 		mesh.vertices = new Vector3[] {
 			new Vector3 (0, 0, 0), // 0
@@ -273,28 +289,28 @@ public class Cursor : StateChangeListener {
 		if (max == Mathf.Abs (delta.x)) {
 			// Creates a highlight plane on y-z axis
 			if (delta.x >= 0) {
-				Debug.Log ("x-axis +");
+				//Debug.Log ("x-axis +");
 				plane.transform.rotation = Quaternion.AngleAxis (0, Vector3.up);
 			} else {
-				Debug.Log ("x-axis -");
+				//Debug.Log ("x-axis -");
 				plane.transform.rotation = Quaternion.AngleAxis (180, Vector3.up);
 			}
 		} else if (max == Mathf.Abs (delta.y)) {
 			// Creates a highlight plane on x-z axis
 			if (delta.y >= 0) {
-				Debug.Log ("y-axis +");
+				//Debug.Log ("y-axis +");
 				plane.transform.rotation = Quaternion.AngleAxis (90, Vector3.up);
 			} else {
-				Debug.Log ("y-axis -");
+				//Debug.Log ("y-axis -");
 				plane.transform.rotation = Quaternion.AngleAxis (270, Vector3.up);
 			}
 		} else { // delta.z is max
 			// Creates a highlight plane on x-y axis
 			if (delta.z >= 0) {
-				Debug.Log ("z-axis +");
+				//Debug.Log ("z-axis +");
 				plane.transform.rotation = Quaternion.AngleAxis (270, Vector3.up);
 			} else {
-				Debug.Log ("z-axis -");
+				//Debug.Log ("z-axis -");
 				plane.transform.rotation = Quaternion.AngleAxis (90, Vector3.up);
 			}
 		}
@@ -309,6 +325,8 @@ public class Cursor : StateChangeListener {
 		GameObject plane = new GameObject ();
 		plane.AddComponent<MeshFilter>();
 		plane.AddComponent<MeshRenderer>();
+		plane.AddComponent<MeshCollider> ();
+		plane.GetComponent<MeshCollider> ().convex = true;
 		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
 		mesh.vertices = new Vector3[] {
 			new Vector3 (0, 0, 0), // 0
@@ -330,10 +348,12 @@ public class Cursor : StateChangeListener {
 		setupShape (plane, delta, target, max);
 	}
 
-	private GameObject createLeftTrianglePrim() {
+	private GameObject createRightTrianglePrim() {
 		GameObject plane = new GameObject ();
 		plane.AddComponent<MeshFilter>();
 		plane.AddComponent<MeshRenderer>();
+		plane.AddComponent<MeshCollider> ();
+		plane.GetComponent<MeshCollider> ().convex = true;
 		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
 		mesh.vertices = new Vector3[] {
 			new Vector3 (0, 0, 0), // 0
@@ -347,15 +367,17 @@ public class Cursor : StateChangeListener {
 		return plane;
 	}
 
-	private void createLeftTriangle(Vector3 delta, Vector3 target, float max) {
-		plane = createLeftTrianglePrim ();
+	private void createRightTriangle(Vector3 delta, Vector3 target, float max) {
+		plane = createRightTrianglePrim ();
 		setupShape (plane, delta, target, max);
 	}
 
-	private GameObject createRightTrianglePrim() {
+	private GameObject createLeftTrianglePrim() {
 		GameObject plane = new GameObject ();
 		plane.AddComponent<MeshFilter>();
 		plane.AddComponent<MeshRenderer>();
+		plane.AddComponent<MeshCollider> ();
+		plane.GetComponent<MeshCollider> ().convex = true;
 		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
 		mesh.vertices = new Vector3[] {
 			new Vector3 (0, 0, 0), // 0
@@ -369,8 +391,8 @@ public class Cursor : StateChangeListener {
 		return plane;
 	}
 
-	private void createRightTriangle(Vector3 delta, Vector3 target, float max) {
-		plane = createRightTrianglePrim ();
+	private void createLeftTriangle(Vector3 delta, Vector3 target, float max) {
+		plane = createLeftTrianglePrim ();
 		setupShape (plane, delta, target, max);
 	}
 }
