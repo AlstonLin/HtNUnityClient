@@ -65,6 +65,8 @@ public class State: MonoBehaviour {
     fireBaseConnection.addBlock(block);
   }
 
+
+
   public List<Block> getBlocks(){
     return blocks;
   }
