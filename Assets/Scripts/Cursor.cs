@@ -66,7 +66,19 @@ public class Cursor : StateChangeListener {
 			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.yellow;
 			break;
 		case FaceColors.RED:
-			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.red;
+			obj.GetComponent<Renderer> ().sharedMaterial.color = new Color(195f/255f, 4f/255f, 4f/255f);
+			break;
+		case FaceColors.GREEN:
+			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.green;
+			break;
+		case FaceColors.PURPLE:
+			obj.GetComponent<Renderer> ().sharedMaterial.color = new Color(127f/255f, 0, 1);
+			break;
+		case FaceColors.ORANGE:
+			obj.GetComponent<Renderer> ().sharedMaterial.color = new Color(1, 127f/255f, 0);
+			break;
+		case FaceColors.BLACK:
+			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.black;
 			break;
 		default:
 			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.white;
@@ -108,8 +120,8 @@ public class Cursor : StateChangeListener {
 				RaycastHit hit;
 				Physics.Raycast (Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity);
 				hitObject = hit.transform.gameObject;
-				lastHighlightedColor = hitObject.GetComponent<Renderer> ().material.color;
-				hitObject.GetComponent<Renderer> ().material.color = Color.red;
+				lastHighlightedColor = hitObject.GetComponent<Renderer> ().sharedMaterial.color;
+				hitObject.GetComponent<Renderer> ().sharedMaterial.color = Color.red;
 				lastHighlightedTarget = hitObject;
 			} else {
 				// Finds the approximate axis that is being looked from
@@ -169,10 +181,18 @@ public class Cursor : StateChangeListener {
 									intColor = FaceColors.WHITE;
 								} else if(currentColor == Color.blue) {
 									intColor = FaceColors.BLUE;
-								} else if(currentColor == Color.red) {
+								} else if(currentColor.r == 195f/255f && currentColor.g == 4f/255f && currentColor.b == 4f/255f) {
 									intColor = FaceColors.RED;
 								} else if(currentColor == Color.yellow) {
 									intColor = FaceColors.YELLOW;
+								} else if(currentColor == Color.green) {
+									intColor = FaceColors.GREEN;
+								} else if(currentColor.r == 127f/255f && currentColor.g == 0 && currentColor.b == 1) {
+									intColor = FaceColors.PURPLE;
+								} else if(currentColor.r == 1 && currentColor.g == 127f/255f && currentColor.b == 0) {
+									intColor = FaceColors.ORANGE;
+								} else if(currentColor == Color.black) {
+									intColor = FaceColors.BLACK;
 								} else {
 									intColor = FaceColors.WHITE;
 								}
