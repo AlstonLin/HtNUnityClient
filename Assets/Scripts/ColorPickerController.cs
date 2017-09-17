@@ -9,7 +9,7 @@ public class ColorPickerController : MonoBehaviour {
 	public GameObject colorPicker;
 
 	// Clicks
-	const float LONG_CLICK_TIME = 0.25f;
+	const float LONG_CLICK_TIME = 0.2f;
 	const float DOUBLE_CLICK_BETWEEN_TIME = 0.3f;
 	float touchTime = 0f;
 	float betweenTouchTime = 0f;

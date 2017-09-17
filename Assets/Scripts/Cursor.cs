@@ -10,8 +10,11 @@ public class Cursor : MonoBehaviour {
 	GameObject plane = null;
 
 	// Clicks
-	const float LONG_CLICK_TIME = 0.25f;
+	const float LONG_CLICK_TIME = 0.2f;
+	const float DOUBLE_CLICK_BETWEEN_TIME = 0.3f;
 	float touchTime = 0f;
+	float betweenTouchTime = 0f;
+	int numClicks = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -43,12 +46,24 @@ public class Cursor : MonoBehaviour {
 		}
 		// Touch detected
 		if (Input.touchCount > 0) {
-			touchTime += Input.GetTouch(0).deltaTime;
+			touchTime += Input.GetTouch (0).deltaTime;
 			if (Input.GetTouch (0).phase == TouchPhase.Ended) {
-				if (touchTime < LONG_CLICK_TIME) {
-					GameObject.Instantiate (plane);
+				if (touchTime < LONG_CLICK_TIME) { // Click
+					numClicks += 1;
+				} else {
+					numClicks = 0;
+					betweenTouchTime = 0;
 				}
 				touchTime = 0;
+			}
+		} else {
+			if (numClicks > 0) {
+				betweenTouchTime += Time.deltaTime;
+				if (betweenTouchTime > DOUBLE_CLICK_BETWEEN_TIME) {
+					if (numClicks == 1) GameObject.Instantiate (plane);
+					numClicks = 0;
+					betweenTouchTime = 0;
+				}
 			}
 		}
 	}

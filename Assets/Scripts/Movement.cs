@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour {
 	// Clicks
-	const float LONG_CLICK_TIME = 0.25f;
+	const float LONG_CLICK_TIME = 0.2f;
+	const float DOUBLE_CLICK_BETWEEN_TIME = 0.3f;
 	float touchTime = 0f;
 
 	// Use this for initialization
