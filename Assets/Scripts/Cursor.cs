@@ -57,19 +57,19 @@ public class Cursor : StateChangeListener {
 		}
 		switch (block.color) {
 		case FaceColors.WHITE:
-			obj.GetComponent<Renderer> ().material.color = Color.white;
+			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.white;
 			break;
 		case FaceColors.BLUE:
-			obj.GetComponent<Renderer> ().material.color = Color.blue;
+			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.blue;
 			break;
 		case FaceColors.YELLOW:
-			obj.GetComponent<Renderer> ().material.color = Color.yellow;
+			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.yellow;
 			break;
 		case FaceColors.RED:
-			obj.GetComponent<Renderer> ().material.color = Color.red;
+			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.red;
 			break;
 		default:
-			obj.GetComponent<Renderer> ().material.color = Color.white;
+			obj.GetComponent<Renderer> ().sharedMaterial.color = Color.white;
 			break;
 		}
 		obj.transform.position = block.location;
