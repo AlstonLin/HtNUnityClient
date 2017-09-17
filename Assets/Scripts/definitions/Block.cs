@@ -18,7 +18,7 @@ public class Block {
   }
 
 	public Block(Quaternion rotation, Vector3 location, Vector3 scale, int color, int shape):
-    this(rotation, location, scale, color, shape, GenerateHash.generateHash()){}
+    this(rotation, location, scale, color, shape, HashGenerator.generateHash()){}
 
   public Block(Block block){
     this.rotation = block.rotation;
@@ -33,21 +33,5 @@ public class Block {
 
   public string toJson(){
     return JsonUtility.ToJson(this);
-  }
-}
-
-public class GenerateHash {
-  static string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  static System.Random random = new System.Random();
-
-  public static string generateHash (){
-  char[] stringChars = new char[8];
-
-  for (int i = 0; i < stringChars.Length; i++)
-  {
-      stringChars[i] = chars[random.Next(chars.Length)];
-  }
-
-  return new string(stringChars);
   }
 }
