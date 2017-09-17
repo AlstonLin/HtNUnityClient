@@ -242,6 +242,9 @@ public class Cursor : StateChangeListener {
 				}
 			}
 		}
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+			Application.Quit();
+		}
 		Debug.Log ("done update");
 	}
 
