@@ -69,10 +69,10 @@ public class Cursor : StateChangeListener {
 		obj.transform.position = block.location;
 		obj.transform.rotation.Set (block.rotation.x, block.rotation.y, block.rotation.z, block.rotation.w);
 		obj.transform.localScale = block.scale;
+		ActiveBlocksDictionary.addToDict (obj);
 	}
 	public override void onBlockRemoved(Block block) {
-		Debug.Log("Removed");
-		Debug.Log(block);
+		Destroy (ActiveBlocksDictionary.getObj (block.id));
 	}
 
 	// Update is called once per frame
@@ -142,10 +142,14 @@ public class Cursor : StateChangeListener {
 						if (numClicks == 1 || Input.GetMouseButtonDown(0)) {
 							if (removeMode && lastSelectedTarget) {
 								Destroy (lastSelectedTarget);
+								Block block = new Block (lastSelectedTarget.transform.rotation, lastSelectedTarget.transform.position,
+									lastSelectedTarget.transform.localScale, 0, 0, lastSelectedTarget.GetInstanceID().ToString());
+								state.removeBlockFromState (block);
 								lastSelectedTarget = null;
 							} else if (!removeMode) {
 								plane.transform.position = lastClickTarget;
 								GameObject.Instantiate (plane);
+								ActiveBlocksDictionary.addToDict (plane);
 
 								int intColor;
 								int intShape;
@@ -170,7 +174,8 @@ public class Cursor : StateChangeListener {
 									break;
 								}
 
-								Block block = new Block (plane.transform.rotation, plane.transform.position, plane.transform.localScale, intColor, intShape);
+								Block block = new Block (plane.transform.rotation, plane.transform.position, 
+									plane.transform.localScale, intColor, intShape, plane.GetInstanceID().ToString());
 								state.addBlockToState (block);
 							}
 						}
