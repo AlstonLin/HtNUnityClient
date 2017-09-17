@@ -31,7 +31,7 @@ public class State: MonoBehaviour {
     blocks = new List<Block>();
 
     // test
-    Block testBlock = new Block(new Quaternion(1,2,3,4), new Vector3(1,2,3), 1,1);
+		Block testBlock = new Block(new Quaternion(1,2,3,4), new Vector3(1,2,3), new Vector3(1,1,1),  1,1);
     addBlockToState(testBlock);
   }
 
