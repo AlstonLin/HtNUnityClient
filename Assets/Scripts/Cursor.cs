@@ -214,12 +214,12 @@ public class Cursor : StateChangeListener {
 		plane.AddComponent<MeshRenderer>();
 		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
 		mesh.vertices = new Vector3[] {
-			new Vector3 (-0.5f, 0, 0), // 0
-			new Vector3 (0, 1, 0.5f), // 1
-			new Vector3 (-0.5f, 0, 1), // 2
-			new Vector3 (-0.5f+PLANE_WIDTH, 0, 0), // 3
-			new Vector3 (0+PLANE_WIDTH, 1, 0.5f), // 4
-			new Vector3 (-0.5f+PLANE_WIDTH, 0, 1)  // 5
+			new Vector3 (0, 0, 0), // 0
+			new Vector3 (0.5f, 1, 0.5f), // 1
+			new Vector3 (0, 0, 1), // 2
+			new Vector3 (0+PLANE_WIDTH, 0, 0), // 3
+			new Vector3 (0.5f+PLANE_WIDTH, 1, 0.5f), // 4
+			new Vector3 (0+PLANE_WIDTH, 0, 1)  // 5
 		};
 		mesh.triangles = new int[] { 0, 1, 2,  0, 3, 1, 1, 3, 4,  0, 2, 3, 2, 5, 3,  1, 4, 2, 4, 5, 2,  3, 5, 4 };
 		return plane;
@@ -228,9 +228,10 @@ public class Cursor : StateChangeListener {
 	private void createCenterTriangle(Vector3 delta, Vector3 target, float max) {
 		plane = createCenterTrianglePrim ();
 		plane.GetComponent<Renderer> ().material.color = currentColor;
+		// unlike Cube, the center of the mesh is on the sides
+		plane.transform.position = new Vector3 (Mathf.Floor (target.x), Mathf.Floor (target.y), Mathf.Floor (target.z));
 		if (max == Mathf.Abs (delta.x)) {
 			// Creates a highlight plane on y-z axis
-			plane.transform.position = new Vector3 ((float)Mathf.Floor (target.x), Mathf.Ceil (target.y) - 0.5f, Mathf.Ceil (target.z) - 0.5f);
 			if (delta.x >= 0) {
 				Debug.Log ("x-axis +");
 				plane.transform.rotation = Quaternion.AngleAxis (0, Vector3.up);
@@ -240,7 +241,6 @@ public class Cursor : StateChangeListener {
 			}
 		} else if (max == Mathf.Abs (delta.y)) {
 			// Creates a highlight plane on x-z axis
-			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, (float)Mathf.Floor (target.y), Mathf.Ceil (target.z) - 0.5f);
 			if (delta.y >= 0) {
 				Debug.Log ("y-axis +");
 				plane.transform.rotation = Quaternion.AngleAxis (90, Vector3.up);
@@ -250,7 +250,6 @@ public class Cursor : StateChangeListener {
 			}
 		} else { // delta.z is max
 			// Creates a highlight plane on x-y axis
-			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, Mathf.Ceil (target.y) - 0.5f, (float)Mathf.Floor (target.z));
 			if (delta.z >= 0) {
 				Debug.Log ("z-axis +");
 				plane.transform.rotation = Quaternion.AngleAxis (270, Vector3.up);
@@ -267,15 +266,15 @@ public class Cursor : StateChangeListener {
 		plane.AddComponent<MeshRenderer>();
 		Mesh mesh = plane.GetComponent<MeshFilter> ().mesh;
 		mesh.vertices = new Vector3[] {
-			new Vector3 (-0.5f, 0, 0), // 0
-			new Vector3 (0.5f, 1, 0), // 1
-			new Vector3 (0.5f, 1, 1), // 2
-			new Vector3 (-0.5f, 0, 1), // 3
+			new Vector3 (0, 0, 0), // 0
+			new Vector3 (1, 1, 0), // 1
+			new Vector3 (1, 1, 1), // 2
+			new Vector3 (0, 0, 1), // 3
 
-			new Vector3 (-0.5f+PLANE_WIDTH, 0, 0), // 0
-			new Vector3 (0.5f+PLANE_WIDTH, 1, 0), // 1
-			new Vector3 (0.5f+PLANE_WIDTH, 1, 1), // 2
-			new Vector3 (-0.5f+PLANE_WIDTH, 0, 1), // 3
+			new Vector3 (0+PLANE_WIDTH, 0, 0), // 0
+			new Vector3 (1+PLANE_WIDTH, 1, 0), // 1
+			new Vector3 (1+PLANE_WIDTH, 1, 1), // 2
+			new Vector3 (0+PLANE_WIDTH, 0, 1), // 3
 		};
 		mesh.triangles = new int[] { 0, 1, 3, 3, 1, 2,  6, 5, 7, 7, 5, 4 };
 		return plane;
@@ -284,9 +283,9 @@ public class Cursor : StateChangeListener {
 	private void createSlantedSquare(Vector3 delta, Vector3 target, float max) {
 		plane = createSlantedSquarePrim ();
 		plane.GetComponent<Renderer> ().material.color = currentColor;
+		plane.transform.position = new Vector3 (Mathf.Floor (target.x), Mathf.Floor (target.y), Mathf.Floor (target.z));
 		if (max == Mathf.Abs (delta.x)) {
 			// Creates a highlight plane on y-z axis
-			plane.transform.position = new Vector3 ((float)Mathf.Floor (target.x), Mathf.Ceil (target.y) - 0.5f, Mathf.Ceil (target.z) - 0.5f);
 			if (delta.x >= 0) {
 				Debug.Log ("x-axis +");
 				plane.transform.rotation = Quaternion.AngleAxis (0, Vector3.up);
@@ -296,7 +295,6 @@ public class Cursor : StateChangeListener {
 			}
 		} else if (max == Mathf.Abs (delta.y)) {
 			// Creates a highlight plane on x-z axis
-			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, (float)Mathf.Floor (target.y), Mathf.Ceil (target.z) - 0.5f);
 			if (delta.y >= 0) {
 				Debug.Log ("y-axis +");
 				plane.transform.rotation = Quaternion.AngleAxis (90, Vector3.up);
@@ -306,7 +304,6 @@ public class Cursor : StateChangeListener {
 			}
 		} else { // delta.z is max
 			// Creates a highlight plane on x-y axis
-			plane.transform.position = new Vector3 (Mathf.Ceil (target.x) - 0.5f, Mathf.Ceil (target.y) - 0.5f, (float)Mathf.Floor (target.z));
 			if (delta.z >= 0) {
 				Debug.Log ("z-axis +");
 				plane.transform.rotation = Quaternion.AngleAxis (270, Vector3.up);
