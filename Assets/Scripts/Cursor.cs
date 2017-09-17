@@ -55,10 +55,9 @@ public class Cursor : StateChangeListener {
 			obj.GetComponent<Renderer> ().material.color = Color.white;
 			break;
 		}
-		obj.transform.position.Set (block.location.x, block.location.y, block.location.z);
+		obj.transform.position = block.location;
 		obj.transform.rotation.Set (block.rotation.x, block.rotation.y, block.rotation.z, block.rotation.w);
-		obj.transform.localScale.Set (block.scale.x, block.scale.y, block.scale.z);
-		GameObject.Instantiate (obj);
+		obj.transform.localScale = block.scale;
 	}
 	public override void onBlockRemoved(Block block) {
 		Debug.Log("Removed");
